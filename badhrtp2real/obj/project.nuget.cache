@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "dgSpecHash": "+kXANzJCB4JWlcMOL0v7wks41fpFedoH/MTMilhf2XLTF9nEjVTpNl6+5xLYH/HY0KYXqz8FdQTfnwx9tTfCIQ==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\krqsk\\RiderProjects\\badhrtp2real\\badhrtp2real\\badhrtp2real.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\krqsk\\.nuget\\packages\\monogame.content.builder.task\\3.8.1.303\\monogame.content.builder.task.3.8.1.303.nupkg.sha512",
+    "C:\\Users\\krqsk\\.nuget\\packages\\monogame.framework.desktopgl\\3.8.1.303\\monogame.framework.desktopgl.3.8.1.303.nupkg.sha512",
+    "C:\\Users\\krqsk\\.nuget\\packages\\microsoft.netcore.app.ref\\6.0.29\\microsoft.netcore.app.ref.6.0.29.nupkg.sha512",
+    "C:\\Users\\krqsk\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\6.0.29\\microsoft.windowsdesktop.app.ref.6.0.29.nupkg.sha512",
+    "C:\\Users\\krqsk\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\6.0.29\\microsoft.aspnetcore.app.ref.6.0.29.nupkg.sha512",
+    "C:\\Users\\krqsk\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\6.0.29\\microsoft.netcore.app.host.win-x64.6.0.29.nupkg.sha512"
+  ],
+  "logs": []
+}
