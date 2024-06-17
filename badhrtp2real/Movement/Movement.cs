@@ -63,7 +63,6 @@ public static class Movement
 
     public static bool willCollide(int x, int y, Keys direction)
     {
-        Console.WriteLine(width + "," + height);
         
         return direction switch 
         {

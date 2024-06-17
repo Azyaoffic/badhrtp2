@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using badhrtp2real.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -10,14 +11,19 @@ public class Game1 : Game
 {
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
+    
+    private Dictionary<string, Texture2D> textureMap = new();
 
-    private Dictionary<String, Texture2D> textureMap = new Dictionary<string, Texture2D>();
-
-    private int characterX = 0;
-    private int characterY = 0;
+    private int characterX;
+    private int characterY;
 
     public static int CHARACTER_WIDTH = 32;
     public static int CHARACTER_HEIGHT = 32;
+
+    public static int WINDOW_WIDTH;
+    public static int WINDOW_HEIGHT;
+
+    private Dictionary<Direction, bool> directionMovement = new();
 
     public Game1()
     {
@@ -28,10 +34,15 @@ public class Game1 : Game
 
     protected override void Initialize()
     {
-        // TODO: Add your initialization logic here
-        
-        textureMap.Add("ball", Content.Load<Texture2D>("Red-Ball-PNG-Pic"));
-        Movement.setBounds(Window.ClientBounds.Width, Window.ClientBounds.Height);
+        // initialize direction dict
+        directionMovement.Add(Direction.LEFT, false);
+        directionMovement.Add(Direction.RIGHT, false);
+        directionMovement.Add(Direction.UP, false);
+        directionMovement.Add(Direction.DOWN, false);
+
+        WINDOW_WIDTH = Window.ClientBounds.Width;
+        WINDOW_HEIGHT = Window.ClientBounds.Height;
+        Movement.setBounds(WINDOW_WIDTH, WINDOW_HEIGHT);
 
         base.Initialize();
     }
@@ -39,8 +50,15 @@ public class Game1 : Game
     protected override void LoadContent()
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
+        
+        textureMap.Add("ball", Content.Load<Texture2D>("Red-Ball-PNG-Pic"));
+        
+        // Tile stuff
+        TileOperations.fullTexture = Content.Load<Texture2D>("BadhrtpTiles");
+        TileOperations.loadTilesIntoDict();
+        TileOperations.loadTiledMap();
 
-        // TODO: use this.Content to load your game content here
+
     }
 
     protected override void Update(GameTime gameTime)
@@ -49,49 +67,72 @@ public class Game1 : Game
             Keyboard.GetState().IsKeyDown(Keys.Escape))
             Exit();
 
+        directionMovement[Direction.RIGHT] = false;
+        directionMovement[Direction.LEFT] = false;
+        directionMovement[Direction.UP] = false;
+        directionMovement[Direction.DOWN] = false;
+        
 
         if (Keyboard.GetState().IsKeyDown(Keys.Right))
         {
-            int newPos = Movement.MoveRight(characterX);
-            if (!Movement.willCollide(newPos, characterY, Keys.Right))
-            {
-                characterX = newPos;
-            }
+            directionMovement[Direction.RIGHT] = true;
         }
 
         if (Keyboard.GetState().IsKeyDown(Keys.Left))
         {
-            int newPos = Movement.MoveLeft(characterX);
-            if (!Movement.willCollide(newPos, characterY, Keys.Left))
-            {
-                characterX = newPos;
-            }
+            directionMovement[Direction.LEFT] = true;
         }
         // Y axis goes down, 0,0 is top left????
         if (Keyboard.GetState().IsKeyDown(Keys.Up))
         {
-            int newPos = Movement.MoveUp(characterY);
-            if (!Movement.willCollide(newPos, characterY, Keys.Up))
-            {
-                characterY = newPos;
-            }
+            directionMovement[Direction.UP] = true;
         }
 
         if (Keyboard.GetState().IsKeyDown(Keys.Down))
         {
-            int newPos = Movement.MoveDown(characterY);
-            if (!Movement.willCollide(newPos, characterY, Keys.Down))
+            directionMovement[Direction.DOWN] = true;
+        }
+        
+        // Console.WriteLine(characterX + "," + characterY);
+        CalculateMovement();
+        
+        
+        base.Update(gameTime);
+    }
+
+    private void CalculateMovement()
+    {
+        if (directionMovement[Direction.RIGHT])
+        {
+            if (!Movement.willCollide(characterX, characterY, Keys.Right))
             {
-                characterY = newPos;
+                characterX = Movement.MoveRight(characterX);
             }
         }
         
-        Console.WriteLine(characterX + "," + characterY);
+        if (directionMovement[Direction.LEFT])
+        {
+            if (!Movement.willCollide(characterX, characterY, Keys.Left))
+            {
+                characterX = Movement.MoveLeft(characterX);
+            }
+        }
         
-
-        // TODO: Add your update logic here
-
-        base.Update(gameTime);
+        if (directionMovement[Direction.UP])
+        {
+            if (!Movement.willCollide(characterX, characterY, Keys.Up))
+            {
+                characterY = Movement.MoveUp(characterY);
+            }
+        }
+        
+        if (directionMovement[Direction.DOWN])
+        {
+            if (!Movement.willCollide(characterX, characterY, Keys.Down))
+            {
+                characterY = Movement.MoveDown(characterY);
+            }
+        }
     }
 
     protected override void Draw(GameTime gameTime)
@@ -102,9 +143,24 @@ public class Game1 : Game
         
         _spriteBatch.Begin();
         
+        // draw terrain
+        foreach (var tileRectangleAndType in TileOperations.mapTiles)
+        {
+            Console.WriteLine("Rendering {0}, {1}", tileRectangleAndType.Item1, tileRectangleAndType.Item2);
+            _spriteBatch.Draw(TileOperations.tileNumberToTexture[tileRectangleAndType.Item2], tileRectangleAndType.Item1, Color.White);
+        }
+        
+        
         // rectangle to make it small
         Rectangle sizeRectangle = new Rectangle(characterX, characterY, CHARACTER_WIDTH, CHARACTER_HEIGHT);
         _spriteBatch.Draw(textureMap["ball"], sizeRectangle, Color.White);
+        
+        
+        // // test to see textures
+        // _spriteBatch.Draw(TileOperations.tileNumberToTexture[1], new Rectangle(100, 100, TileOperations.TILE_WIDTH, TileOperations.TILE_HEIGHT), Color.White);
+        // _spriteBatch.Draw(TileOperations.tileNumberToTexture[2], new Rectangle(200, 200, TileOperations.TILE_WIDTH, TileOperations.TILE_HEIGHT), Color.White);
+
+        
         _spriteBatch.End();
         
 

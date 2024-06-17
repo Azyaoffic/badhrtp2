@@ -4,9 +4,11 @@
   <Platform>DesktopGL</Platform>
   <Config />
   <SourceFiles>
+    <File>C:/Users/krqsk/RiderProjects/badhrtp2real/badhrtp2real/Content/BadhrtpTiles.png</File>
     <File>C:/Users/krqsk/RiderProjects/badhrtp2real/badhrtp2real/Content/Red-Ball-PNG-Pic.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
   </DestFiles>
 </SourceFileCollection>
