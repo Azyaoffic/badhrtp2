@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using badhrtp2real.Graphics;
+using badhrtp2real.Player;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -14,8 +15,7 @@ public class Game1 : Game
     
     private Dictionary<string, Texture2D> textureMap = new();
 
-    private int characterX;
-    private int characterY;
+    public Player.Player player;
 
     public static int CHARACTER_WIDTH = 32;
     public static int CHARACTER_HEIGHT = 32;
@@ -34,6 +34,8 @@ public class Game1 : Game
 
     protected override void Initialize()
     {
+        player = new RedBall(0, 0);
+        
         // initialize direction dict
         directionMovement.Add(Direction.LEFT, false);
         directionMovement.Add(Direction.RIGHT, false);
@@ -95,6 +97,7 @@ public class Game1 : Game
         
         // Console.WriteLine(characterX + "," + characterY);
         CalculateMovement();
+        Gravity.ApplyGravity(player);
         
         
         base.Update(gameTime);
@@ -104,33 +107,33 @@ public class Game1 : Game
     {
         if (directionMovement[Direction.RIGHT])
         {
-            if (!Movement.willCollide(characterX, characterY, Keys.Right))
+            if (!Movement.willCollide(player.COORDINATE_X, player.COORDINATE_Y, Keys.Right))
             {
-                characterX = Movement.MoveRight(characterX);
+                player.COORDINATE_X = Movement.MoveRight(player.COORDINATE_X);
             }
         }
         
         if (directionMovement[Direction.LEFT])
         {
-            if (!Movement.willCollide(characterX, characterY, Keys.Left))
+            if (!Movement.willCollide(player.COORDINATE_X, player.COORDINATE_Y, Keys.Left))
             {
-                characterX = Movement.MoveLeft(characterX);
+                player.COORDINATE_X = Movement.MoveLeft(player.COORDINATE_X);
             }
         }
         
         if (directionMovement[Direction.UP])
         {
-            if (!Movement.willCollide(characterX, characterY, Keys.Up))
+            if (!Movement.willCollide(player.COORDINATE_X, player.COORDINATE_Y, Keys.Up))
             {
-                characterY = Movement.MoveUp(characterY);
+                player.COORDINATE_Y = Movement.MoveUp(player.COORDINATE_Y);
             }
         }
         
         if (directionMovement[Direction.DOWN])
         {
-            if (!Movement.willCollide(characterX, characterY, Keys.Down))
+            if (!Movement.willCollide(player.COORDINATE_X, player.COORDINATE_Y, Keys.Down))
             {
-                characterY = Movement.MoveDown(characterY);
+                player.COORDINATE_Y = Movement.MoveDown(player.COORDINATE_Y);
             }
         }
     }
@@ -151,7 +154,7 @@ public class Game1 : Game
         
         
         // rectangle to make it small
-        Rectangle sizeRectangle = new Rectangle(characterX, characterY, CHARACTER_WIDTH, CHARACTER_HEIGHT);
+        Rectangle sizeRectangle = new Rectangle((int) player.COORDINATE_X, (int) player.COORDINATE_Y, CHARACTER_WIDTH, CHARACTER_HEIGHT);
         _spriteBatch.Draw(textureMap["ball"], sizeRectangle, Color.White);
         
         

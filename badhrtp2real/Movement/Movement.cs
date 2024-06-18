@@ -7,62 +7,62 @@ namespace badhrtp2real;
 
 public static class Movement
 {
-    private static int speed = 4;
-    private static int width;
-    private static int height;
-
-    public static void setBounds(int w, int h)
+    private static double speed = 4;
+    private static double width;
+    private static double height;
+    
+    public static void setBounds(double w, double h)
     {
         width = w;
         height = h;
     }
 
-    public static void SetSpeed(int newSpeed)
+    public static void SetSpeed(double newSpeed)
     {
         speed = newSpeed;
     }
 
-    public static int MoveRight(int currentX)
+    public static double MoveRight(double currentX)
     {
         return currentX + speed;
     }
     
-    public static int MoveRight(int currentX, int diffSpeed)
+    public static double MoveRight(double currentX, double diffSpeed)
     {
         return currentX + diffSpeed;
     }
     
-    public static int MoveLeft(int currentX)
+    public static double MoveLeft(double currentX)
     {
         return currentX - speed;
     }
     
-    public static int MoveLeft(int currentX, int diffSpeed)
+    public static double MoveLeft(double currentX, double diffSpeed)
     {
         return currentX - diffSpeed;
     }
     
-    public static int MoveUp(int currentY)
+    public static double MoveUp(double currentY)
     {
         return currentY - speed;
     }
     
-    public static int MoveUp(int currentY, int diffSpeed)
+    public static double MoveUp(double currentY, double diffSpeed)
     {
         return currentY - diffSpeed;
     }
     
-    public static int MoveDown(int currentY)
+    public static double MoveDown(double currentY)
     {
         return currentY + speed;
     }
     
-    public static int MoveDown(int currentY, int diffSpeed)
+    public static double MoveDown(double currentY, double diffSpeed)
     {
         return currentY + diffSpeed;
     }
 
-    public static bool willCollide(int x, int y, Keys direction)
+    public static bool willCollide(double x, double y, Keys direction)
     {
 
         switch (direction)
@@ -77,7 +77,7 @@ public static class Movement
                 {
                     foreach (var mapColl in TileOperations.mapCollisions)
                     {
-                        if (mapColl.Intersects(new Rectangle(x + speed, y, Game1.CHARACTER_WIDTH, Game1.CHARACTER_HEIGHT)))
+                        if (mapColl.Intersects(new Rectangle((int) (x + speed),(int) y, Game1.CHARACTER_WIDTH, Game1.CHARACTER_HEIGHT)))
                         {
                             return true;
                         }
@@ -95,7 +95,7 @@ public static class Movement
                 {
                     foreach (var mapColl in TileOperations.mapCollisions)
                     {
-                        if (mapColl.Intersects(new Rectangle(x - speed, y, Game1.CHARACTER_WIDTH, Game1.CHARACTER_HEIGHT)))
+                        if (mapColl.Intersects(new Rectangle((int) (x - speed), (int) y, Game1.CHARACTER_WIDTH, Game1.CHARACTER_HEIGHT)))
                         {
                             return true;
                         }
@@ -113,7 +113,7 @@ public static class Movement
                 {
                     foreach (var mapColl in TileOperations.mapCollisions)
                     {
-                        if (mapColl.Intersects(new Rectangle(x, y - speed, Game1.CHARACTER_WIDTH, Game1.CHARACTER_HEIGHT)))
+                        if (mapColl.Intersects(new Rectangle((int) x, (int) (y - speed), Game1.CHARACTER_WIDTH, Game1.CHARACTER_HEIGHT)))
                         {
                             return true;
                         }
@@ -131,7 +131,7 @@ public static class Movement
                 {
                     foreach (var mapColl in TileOperations.mapCollisions)
                     {
-                        if (mapColl.Intersects(new Rectangle(x, y + speed, Game1.CHARACTER_WIDTH, Game1.CHARACTER_HEIGHT)))
+                        if (mapColl.Intersects(new Rectangle((int) x,(int) (y + speed), Game1.CHARACTER_WIDTH, Game1.CHARACTER_HEIGHT)))
                         {
                             return true;
                         }
