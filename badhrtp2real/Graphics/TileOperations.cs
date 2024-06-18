@@ -79,6 +79,13 @@ public static class TileOperations
                     }
                 }
             }
+            else  // this time collision
+            {
+                foreach (var item in layer.objects)
+                {
+                    mapCollisions.Add(new Rectangle((int) item.x,(int) item.y,(int) item.width,(int) item.height));
+                }
+            }
         }
     }
 }

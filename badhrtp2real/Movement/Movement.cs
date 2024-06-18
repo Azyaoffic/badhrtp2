@@ -1,4 +1,5 @@
 ﻿using System;
+using badhrtp2real.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
@@ -63,13 +64,83 @@ public static class Movement
 
     public static bool willCollide(int x, int y, Keys direction)
     {
-        
-        return direction switch 
+
+        switch (direction)
         {
-            Keys.Right => x + Game1.CHARACTER_WIDTH >= width,
-            Keys.Left => x <= 0,
-            Keys.Up => y <= 0,
-            Keys.Down => y + Game1.CHARACTER_HEIGHT >= height
-        };
+            case Keys.Right: 
+                var collBorderR = x + Game1.CHARACTER_WIDTH >= width;
+                if (collBorderR)
+                {
+                    return collBorderR;
+                }
+                else
+                {
+                    foreach (var mapColl in TileOperations.mapCollisions)
+                    {
+                        if (mapColl.Intersects(new Rectangle(x + speed, y, Game1.CHARACTER_WIDTH, Game1.CHARACTER_HEIGHT)))
+                        {
+                            return true;
+                        }
+                    }
+
+                    return false;
+                }
+            case Keys.Left:
+                var collBorderL = x <= 0;
+                if (collBorderL)
+                {
+                    return collBorderL;
+                }
+                else
+                {
+                    foreach (var mapColl in TileOperations.mapCollisions)
+                    {
+                        if (mapColl.Intersects(new Rectangle(x - speed, y, Game1.CHARACTER_WIDTH, Game1.CHARACTER_HEIGHT)))
+                        {
+                            return true;
+                        }
+                    }
+
+                    return false;
+                }
+            case Keys.Up:
+                var collBorderU = y <= 0;
+                if (collBorderU)
+                {
+                    return collBorderU;
+                }
+                else
+                {
+                    foreach (var mapColl in TileOperations.mapCollisions)
+                    {
+                        if (mapColl.Intersects(new Rectangle(x, y - speed, Game1.CHARACTER_WIDTH, Game1.CHARACTER_HEIGHT)))
+                        {
+                            return true;
+                        }
+                    }
+
+                    return false;
+                }
+            case Keys.Down:
+                var collBorderD = y + Game1.CHARACTER_HEIGHT >= height;
+                if (collBorderD)
+                {
+                    return collBorderD;
+                }
+                else
+                {
+                    foreach (var mapColl in TileOperations.mapCollisions)
+                    {
+                        if (mapColl.Intersects(new Rectangle(x, y + speed, Game1.CHARACTER_WIDTH, Game1.CHARACTER_HEIGHT)))
+                        {
+                            return true;
+                        }
+                    }
+
+                    return false;
+                }
+        }
+
+        return false;
     }
 }

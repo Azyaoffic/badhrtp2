@@ -146,7 +146,6 @@ public class Game1 : Game
         // draw terrain
         foreach (var tileRectangleAndType in TileOperations.mapTiles)
         {
-            Console.WriteLine("Rendering {0}, {1}", tileRectangleAndType.Item1, tileRectangleAndType.Item2);
             _spriteBatch.Draw(TileOperations.tileNumberToTexture[tileRectangleAndType.Item2], tileRectangleAndType.Item1, Color.White);
         }
         
