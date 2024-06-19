@@ -7,60 +7,98 @@ namespace badhrtp2real;
 
 public static class Movement
 {
-    private static double speed = 4;
     private static double width;
     private static double height;
-    
+
+    public static Vector2 velocity = Vector2.Zero;
+    public static Vector2 acceleration = Vector2.Zero;
+    public static float speed = 0.05f; // Adjust the speed as needed.
+    public static float friction = 0.99f; // Adjust for friction effect.
+    public static float jumpSpeed = 6.0f; // Initial jump speed
+    public static bool isJumping;
+
+
+
     public static void setBounds(double w, double h)
     {
         width = w;
         height = h;
     }
 
-    public static void SetSpeed(double newSpeed)
+    public static void SetSpeed(float newSpeed)
     {
         speed = newSpeed;
     }
 
-    public static double MoveRight(double currentX)
+    public static void MoveByVector()
     {
-        return currentX + speed;
+        // Update velocity based on acceleration
+        velocity += acceleration;
+        
+        // Apply friction to the velocity
+        velocity *= friction;
+
+        // Rounding velocity to 0
+        if (acceleration.X == 0f && Math.Abs(velocity.X) < 0.1)
+        {
+            velocity.X = 0;
+        }
+        
+        // Update player position based on velocity
+        Game1.player.COORDINATE_X += velocity.X;
+        Game1.player.COORDINATE_Y += velocity.Y;
+        
+        
+        Console.WriteLine(velocity);
+        Console.WriteLine(acceleration);
+        
+        // Reset acceleration for the next frame
+        acceleration = Vector2.Zero;
+        CollisionChecks();
+
     }
-    
-    public static double MoveRight(double currentX, double diffSpeed)
+
+    private static void CollisionChecks()
     {
-        return currentX + diffSpeed;
+        if (velocity.X > 0)
+        {
+            willCollide(Game1.player.COORDINATE_X, Game1.player.COORDINATE_Y - 4, Keys.Right);
+        }
+        else
+        {
+            willCollide(Game1.player.COORDINATE_X, Game1.player.COORDINATE_Y - 4, Keys.Left);
+        }
     }
-    
-    public static double MoveLeft(double currentX)
+
+    public static void MoveRight()
     {
-        return currentX - speed;
+        if (!willCollide(Game1.player.COORDINATE_X, Game1.player.COORDINATE_Y - 4, Keys.Right))
+        {
+            acceleration += Vector2.UnitX * speed;
+        }
     }
-    
-    public static double MoveLeft(double currentX, double diffSpeed)
+
+    public static void MoveLeft()
     {
-        return currentX - diffSpeed;
+        if (!willCollide(Game1.player.COORDINATE_X, Game1.player.COORDINATE_Y - 4, Keys.Left))
+        {
+            acceleration -= Vector2.UnitX * speed;
+        }    
     }
-    
-    public static double MoveUp(double currentY)
+
+    public static void Jump()
     {
-        return currentY - speed;
+        if (willCollide(Game1.player.COORDINATE_X, Game1.player.COORDINATE_Y + 1, Keys.Down) && !isJumping)
+        {
+            velocity.Y = -jumpSpeed; // Initial jump velocity
+            isJumping = true;
+        }
     }
-    
-    public static double MoveUp(double currentY, double diffSpeed)
-    {
-        return currentY - diffSpeed;
-    }
-    
-    public static double MoveDown(double currentY)
-    {
-        return currentY + speed;
-    }
-    
-    public static double MoveDown(double currentY, double diffSpeed)
-    {
-        return currentY + diffSpeed;
-    }
+    //
+    // public static void MoveDown()
+    // {
+    //     acceleration += Vector2.UnitY * speed;
+    // }
 
     public static bool willCollide(double x, double y, Keys direction)
     {
@@ -71,6 +109,8 @@ public static class Movement
                 var collBorderR = x + Game1.CHARACTER_WIDTH >= width;
                 if (collBorderR)
                 {
+                    velocity.X = 0;
+                    acceleration.X = 0;
                     return collBorderR;
                 }
                 else
@@ -79,6 +119,8 @@ public static class Movement
                     {
                         if (mapColl.Intersects(new Rectangle((int) (x + speed),(int) y, Game1.CHARACTER_WIDTH, Game1.CHARACTER_HEIGHT)))
                         {
+                            velocity.X = 0;
+                            acceleration.X = 0;
                             return true;
                         }
                     }
@@ -89,6 +131,8 @@ public static class Movement
                 var collBorderL = x <= 0;
                 if (collBorderL)
                 {
+                    velocity.X = 0;
+                    acceleration.X = 0;
                     return collBorderL;
                 }
                 else
@@ -97,6 +141,8 @@ public static class Movement
                     {
                         if (mapColl.Intersects(new Rectangle((int) (x - speed), (int) y, Game1.CHARACTER_WIDTH, Game1.CHARACTER_HEIGHT)))
                         {
+                            velocity.X = 0;
+                            acceleration.X = 0;
                             return true;
                         }
                     }
@@ -107,6 +153,8 @@ public static class Movement
                 var collBorderU = y <= 0;
                 if (collBorderU)
                 {
+                    velocity.Y = 0;
+                    acceleration.Y = 0;
                     return collBorderU;
                 }
                 else
@@ -115,6 +163,8 @@ public static class Movement
                     {
                         if (mapColl.Intersects(new Rectangle((int) x, (int) (y - speed), Game1.CHARACTER_WIDTH, Game1.CHARACTER_HEIGHT)))
                         {
+                            velocity.Y = 0;
+                            acceleration.Y = 0;
                             return true;
                         }
                     }

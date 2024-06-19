@@ -15,7 +15,7 @@ public class Game1 : Game
     
     private Dictionary<string, Texture2D> textureMap = new();
 
-    public Player.Player player;
+    public static Player.Player player;
 
     public static int CHARACTER_WIDTH = 32;
     public static int CHARACTER_HEIGHT = 32;
@@ -89,11 +89,11 @@ public class Game1 : Game
         {
             directionMovement[Direction.UP] = true;
         }
-
-        if (Keyboard.GetState().IsKeyDown(Keys.Down))
-        {
-            directionMovement[Direction.DOWN] = true;
-        }
+        //
+        // if (Keyboard.GetState().IsKeyDown(Keys.Down))
+        // {
+        //     directionMovement[Direction.DOWN] = true;
+        // }
         
         // Console.WriteLine(characterX + "," + characterY);
         CalculateMovement();
@@ -107,36 +107,31 @@ public class Game1 : Game
     {
         if (directionMovement[Direction.RIGHT])
         {
-            if (!Movement.willCollide(player.COORDINATE_X, player.COORDINATE_Y, Keys.Right))
-            {
-                player.COORDINATE_X = Movement.MoveRight(player.COORDINATE_X);
-            }
+                Movement.MoveRight();
         }
-        
+    
         if (directionMovement[Direction.LEFT])
         {
-            if (!Movement.willCollide(player.COORDINATE_X, player.COORDINATE_Y, Keys.Left))
-            {
-                player.COORDINATE_X = Movement.MoveLeft(player.COORDINATE_X);
-            }
+                Movement.MoveLeft();
         }
-        
+    
         if (directionMovement[Direction.UP])
         {
-            if (!Movement.willCollide(player.COORDINATE_X, player.COORDINATE_Y, Keys.Up))
-            {
-                player.COORDINATE_Y = Movement.MoveUp(player.COORDINATE_Y);
-            }
+                Movement.Jump();
         }
         
-        if (directionMovement[Direction.DOWN])
-        {
-            if (!Movement.willCollide(player.COORDINATE_X, player.COORDINATE_Y, Keys.Down))
-            {
-                player.COORDINATE_Y = Movement.MoveDown(player.COORDINATE_Y);
-            }
-        }
+        // if (directionMovement[Direction.DOWN])
+        // {
+        //     if (!Movement.willCollide(player.COORDINATE_X, player.COORDINATE_Y, Keys.Down))
+        //     {
+        //         Movement.MoveDown();
+        //     }
+        // }
+
+        // Update the player's movement based on velocity and acceleration
+        Movement.MoveByVector();
     }
+
 
     protected override void Draw(GameTime gameTime)
     {
