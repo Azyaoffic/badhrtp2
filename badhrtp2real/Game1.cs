@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using badhrtp2real.Graphics;
 using badhrtp2real.Player;
+using Comora;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -16,6 +17,7 @@ public class Game1 : Game
     private Dictionary<string, Texture2D> textureMap = new();
 
     public static Player.Player player;
+    private Camera camera;
 
     public static int CHARACTER_WIDTH = 32;
     public static int CHARACTER_HEIGHT = 32;
@@ -35,6 +37,7 @@ public class Game1 : Game
     protected override void Initialize()
     {
         player = new RedBall(0, 0);
+        camera = new Camera(_graphics.GraphicsDevice);
         
         // initialize direction dict
         directionMovement.Add(Direction.LEFT, false);
@@ -99,6 +102,8 @@ public class Game1 : Game
         CalculateMovement();
         Gravity.ApplyGravity(player);
         
+        camera.Update(gameTime);
+        camera.Position = new Vector2((float)player.COORDINATE_X, (float)player.COORDINATE_Y);
         
         base.Update(gameTime);
     }
@@ -139,7 +144,7 @@ public class Game1 : Game
 
         // TODO: Add your drawing code here
         
-        _spriteBatch.Begin();
+        _spriteBatch.Begin(camera);
         
         // draw terrain
         foreach (var tileRectangleAndType in TileOperations.mapTiles)

@@ -105,90 +105,51 @@ public static class Movement
 
         switch (direction)
         {
-            case Keys.Right: 
-                var collBorderR = x + Game1.CHARACTER_WIDTH >= width;
-                if (collBorderR)
+           case Keys.Right: 
+                foreach (var mapColl in TileOperations.mapCollisions)
                 {
-                    velocity.X = 0;
-                    acceleration.X = 0;
-                    return collBorderR;
-                }
-                else
-                {
-                    foreach (var mapColl in TileOperations.mapCollisions)
+                    if (mapColl.Intersects(new Rectangle((int) (x + speed),(int) y, Game1.CHARACTER_WIDTH, Game1.CHARACTER_HEIGHT)))
                     {
-                        if (mapColl.Intersects(new Rectangle((int) (x + speed),(int) y, Game1.CHARACTER_WIDTH, Game1.CHARACTER_HEIGHT)))
-                        {
-                            velocity.X = 0;
-                            acceleration.X = 0;
-                            return true;
-                        }
+                        velocity.X = 0;
+                        acceleration.X = 0;
+                        return true;
                     }
-
-                    return false;
                 }
+                return false;
             case Keys.Left:
-                var collBorderL = x <= 0;
-                if (collBorderL)
+                foreach (var mapColl in TileOperations.mapCollisions)
                 {
-                    velocity.X = 0;
-                    acceleration.X = 0;
-                    return collBorderL;
-                }
-                else
-                {
-                    foreach (var mapColl in TileOperations.mapCollisions)
+                    if (mapColl.Intersects(new Rectangle((int) (x - speed), (int) y, Game1.CHARACTER_WIDTH, Game1.CHARACTER_HEIGHT)))
                     {
-                        if (mapColl.Intersects(new Rectangle((int) (x - speed), (int) y, Game1.CHARACTER_WIDTH, Game1.CHARACTER_HEIGHT)))
-                        {
-                            velocity.X = 0;
-                            acceleration.X = 0;
-                            return true;
-                        }
+                        velocity.X = 0;
+                        acceleration.X = 0;
+                        return true;
                     }
-
-                    return false;
                 }
+
+                return false;
+                
             case Keys.Up:
-                var collBorderU = y <= 0;
-                if (collBorderU)
+                foreach (var mapColl in TileOperations.mapCollisions)
                 {
-                    velocity.Y = 0;
-                    acceleration.Y = 0;
-                    return collBorderU;
-                }
-                else
-                {
-                    foreach (var mapColl in TileOperations.mapCollisions)
+                    if (mapColl.Intersects(new Rectangle((int) x, (int) (y - speed), Game1.CHARACTER_WIDTH, Game1.CHARACTER_HEIGHT)))
                     {
-                        if (mapColl.Intersects(new Rectangle((int) x, (int) (y - speed), Game1.CHARACTER_WIDTH, Game1.CHARACTER_HEIGHT)))
-                        {
-                            velocity.Y = 0;
-                            acceleration.Y = 0;
-                            return true;
-                        }
+                        velocity.Y = 0;
+                        acceleration.Y = 0;
+                        return true;
                     }
-
-                    return false;
                 }
+
+                return false;
             case Keys.Down:
-                var collBorderD = y + Game1.CHARACTER_HEIGHT >= height;
-                if (collBorderD)
+                foreach (var mapColl in TileOperations.mapCollisions)
                 {
-                    return collBorderD;
-                }
-                else
-                {
-                    foreach (var mapColl in TileOperations.mapCollisions)
+                    if (mapColl.Intersects(new Rectangle((int) x,(int) (y + speed), Game1.CHARACTER_WIDTH, Game1.CHARACTER_HEIGHT)))
                     {
-                        if (mapColl.Intersects(new Rectangle((int) x,(int) (y + speed), Game1.CHARACTER_WIDTH, Game1.CHARACTER_HEIGHT)))
-                        {
-                            return true;
-                        }
+                        return true;
                     }
-
-                    return false;
                 }
+                return false;
         }
 
         return false;

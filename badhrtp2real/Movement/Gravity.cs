@@ -18,7 +18,7 @@ public static class Gravity
         else
         {
             Game1.player.COORDINATE_Y -= Game1.player.COORDINATE_Y % TileOperations.TILE_HEIGHT;
-            if (Movement.velocity.Y > 1 && Movement.velocity.Y > 0)
+            if (Movement.velocity.Y > 2 && Movement.velocity.Y > 0)
             {
                 CalculateBounce();
                 Movement.isJumping = false;
