@@ -2,6 +2,7 @@
 
 public abstract class Player
 {
-    public double COORDINATE_X;
-    public double COORDINATE_Y;
+    public virtual double COORDINATE_X { get; set; }
+    public virtual double COORDINATE_Y { get; set; }
+    public virtual double WEIGHT { get; set; }
 }

@@ -49,8 +49,8 @@ public static class Movement
         Game1.player.COORDINATE_Y += velocity.Y;
         
         
-        Console.WriteLine(velocity);
-        Console.WriteLine(acceleration);
+        Console.WriteLine("Velocity: {0}", velocity);
+        //Console.WriteLine(acceleration);
         
         // Reset acceleration for the next frame
         acceleration = Vector2.Zero;
@@ -88,7 +88,7 @@ public static class Movement
 
     public static void Jump()
     {
-        if (willCollide(Game1.player.COORDINATE_X, Game1.player.COORDINATE_Y + 1, Keys.Down) && !isJumping)
+        if (willCollide(Game1.player.COORDINATE_X, Game1.player.COORDINATE_Y + 4, Keys.Down) && !isJumping)
         {
             velocity.Y = -jumpSpeed; // Initial jump velocity
             isJumping = true;

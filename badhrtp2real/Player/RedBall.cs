@@ -2,9 +2,9 @@
 
 public class RedBall : Player
 {
-    public double COORDINATE_X;
-    public double COORDINATE_Y;
-    public double WEIGHT = 1;
+    public override double COORDINATE_X { get; set; }
+    public override double COORDINATE_Y { get; set; }
+    public override double WEIGHT { get; set; } = 1;
 
     public RedBall(double coordinateX, double coordinateY)
     {
